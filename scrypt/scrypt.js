@@ -1,23 +1,22 @@
 "use strict";
-let money = 90000;
+let isNumber = function (n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+let money;
 let income = "фриланс";
-let addExpenses = "интернет, автобус, жилье, телефон";
+let addExpenses;
 let deposit = true;
 let mission = 1000000;
 let period = 6;
 
-// lesson03
-money = +prompt("Ваш месячный доход?", "90000");
-while (money === undefined || money === null || money === "" || isNaN(money)) {
-  alert("Введите число ");
-  money = +prompt("Ваш месячный доход?", "90000");
-}
+let start = function () {
+  do {
+    money = prompt("Ваш месячный доход?", "60000");
+  } while (!isNumber(money));
+};
 
-addExpenses = prompt(
-  "Перечислите возможные расходы за рассчитываемый период через запятую",
-  "интернет, автобус, жилье, телефон"
-);
-console.log(addExpenses.toLowerCase().split(","));
+start();
 
 deposit = confirm("Есть ли у вас депозит в банке?");
 
@@ -28,36 +27,37 @@ showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 
-let expenses1 = prompt("Введите обязательную статью расходов?", "интернет");
-let amount1 = +prompt("Во сколько это обойдется?", "1500");
-while (
-  amount1 === undefined ||
-  amount1 === null ||
-  amount1 === "" ||
-  isNaN(amount1)
-) {
-  alert("Введите число ");
-  amount1 = +prompt("Во сколько это обойдется?", "0");
-}
-let expenses2 = prompt("Введите обязательную статью расходов?", "квартплата");
-let amount2 = +prompt("Во сколько это обойдется?", "18000");
-while (
-  amount2 === undefined ||
-  amount2 === null ||
-  amount2 === "" ||
-  isNaN(amount2)
-) {
-  alert("Введите число ");
-  amount2 = +prompt("Во сколько это обойдется?", "0");
+addExpenses = prompt(
+  "Перечислите возможные расходы за рассчитываемый период через запятую",
+  "жилье, телефон"
+);
+console.log(addExpenses.toLowerCase().split(","));
+
+let expenses = [];
+
+function getExpensesMonth() {
+  let sum = 0;
+  let sum1 = 0;
+  for (let i = 0; i < 2; i++) {
+    expenses[i] = prompt("Введите обязательную статью расходов?", "интернет");
+
+    sum1 = prompt("Во сколько это обойдется?");
+    while (!isNumber(sum1)) {
+      sum1 = prompt("Во сколько это обойдется?");
+    }
+    sum += +sum1;
+  }
+  console.log(expenses);
+
+  return sum;
 }
 
-//Lesson 04
-function getExpensesMonth() {
-  return amount1 + amount2;
-}
-console.log("Расходы за месяц: " + getExpensesMonth());
+let expensesAmount = getExpensesMonth();
+
+console.log("Расходы за месяц: " + expensesAmount);
+
 function getAccumulatedMonth() {
-  return money - amount1 - amount2;
+  return +money - expensesAmount;
 }
 
 let accumulatedMonth = getAccumulatedMonth();
@@ -65,7 +65,11 @@ let accumulatedMonth = getAccumulatedMonth();
 function getTargetMonth() {
   return Math.ceil(mission / accumulatedMonth);
 }
-console.log("Цель будет достигнута за " + getTargetMonth() + " месяцев");
+if (+getTargetMonth() > 0) {
+  console.log("Цель будет достигнута за " + getTargetMonth() + " месяцев");
+} else {
+  console.log("Цель не будет достигнута");
+}
 
 let budgetDay = Math.floor(accumulatedMonth / 30);
 console.log("Бюджет на день : " + budgetDay);
