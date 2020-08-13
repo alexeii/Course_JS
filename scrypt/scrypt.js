@@ -31,7 +31,7 @@ addExpenses = prompt(
   "Перечислите возможные расходы за рассчитываемый период через запятую",
   "жилье, телефон"
 );
-console.log(addExpenses.toLowerCase().split(","));
+/* console.log(addExpenses.toLowerCase().split(",")); */
 
 let expenses = [];
 
